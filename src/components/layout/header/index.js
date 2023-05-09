@@ -2,31 +2,29 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 const HeaderSection = styled.header`
-  width: 1000px;
-  height: 90px;
-  margin: 0 auto;
+  width: 100%;
+  height: 80px;
+  background-color: white;
 
   .logo {
     flex-grow: 1;
-    font-size: 24px;
-    font-weight: 700;
-    color: white;
+    font-size: 32px;
+    color: #5c5ce7;
+    font-family: Pretendard-Bold;
+    padding: 0 30px;
   }
   .navItems {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    font-size: 1.2rem;
-    padding: 0 30px;
-    background-color: #222;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0);
-    width: 95%;
+    width: 100%;
     height: 80px;
-    border-radius: 13px;
     position: fixed;
-    top: 20px;
+    z-index: 1;
     left: 50%;
     transform: translate(-50%);
+    font-family: Pretendard-Regular;
+    border-bottom: 1px solid #e2e2e2;
+    background-color: white;
   }
   .category {
     display: grid;
@@ -35,6 +33,7 @@ const HeaderSection = styled.header`
     list-style: none;
     align-items: center;
     justify-content: end;
+    font-size: 1.3rem;
   }
   .challenge,
   .rank {
@@ -43,23 +42,28 @@ const HeaderSection = styled.header`
   }
   .login {
     padding: 0.5rem 0.7rem;
-    margin-left: 1rem;
+    margin: 0 30px 0 1rem;
     white-space: nowrap;
-    background-color: #fafafa;
     border-radius: 3px;
-    color: #222;
+    background-color: #5c5ce7;
+    opacity: 0.8;
+    color: white;
   }
   .challenge:hover,
   .rank:hover {
-    background-color: rgb(80, 80, 230);
+    color: #5c5ce7;
     border-radius: 4px;
-    transition: all 0.2s ease-in-out;
+    transition: all 0.1s ease-in-out;
+  }
+
+  .login:hover {
+    opacity: 1;
   }
 `;
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  color: white;
+  color: inherit;
 `;
 
 const Header = () => {
@@ -67,7 +71,7 @@ const Header = () => {
     <HeaderSection>
       <div className="navItems">
         <div className="logo">
-          <StyledLink to="/">CAPSTONE</StyledLink>
+          <StyledLink to="/">CTK</StyledLink>
         </div>
         <div className="category">
           <div className="challenge">
@@ -76,11 +80,9 @@ const Header = () => {
           <div className="rank">
             <StyledLink to="/rank">RANK</StyledLink>
           </div>
-          <div className="login">
-            <StyledLink to="/login" style={{ color: "black" }}>
-              LOGIN
-            </StyledLink>
-          </div>
+        </div>
+        <div className="login">
+          <StyledLink to="/login">로그인</StyledLink>
         </div>
       </div>
     </HeaderSection>

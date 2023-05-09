@@ -3,6 +3,7 @@ import Main from "./components/main";
 import Challenge from "./components/challenge";
 import Rank from "./components/rank";
 import Layout from "./components/layout";
+import Login from "./components/login";
 
 const App = () => {
   return (
@@ -12,6 +13,7 @@ const App = () => {
           <Route path="/" element={<Main />} />
           <Route path="/challenge" element={<Challenge />} />
           <Route path="/rank" element={<Rank />} />
+          <Route path="/login" element={<Login />} />
         </Route>
       </Routes>
     </BrowserRouter>
