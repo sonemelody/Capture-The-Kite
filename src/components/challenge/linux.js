@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 
-const ChallengeSection = styled.section`
+const LinuxSection = styled.section`
   font-family: Pretendard-Bold;
   .challengeItems {
     margin: 40px 0px 20px 110px;
@@ -65,40 +65,8 @@ const StyledLink = styled(Link)`
   color: inherit;
 `;
 
-const Challenge = () => {
-  return (
-    <ChallengeSection>
-      <div className="challengeItems">
-        <span className="all">
-          <StyledLink to="/challenge">전체 문제</StyledLink>
-        </span>
-        <span className="sys">
-          <StyledLink to="/challenge/sys">시스템해킹</StyledLink>
-        </span>
-        <span className="linux">
-          <StyledLink to="/challenge/linux">리눅스</StyledLink>
-        </span>
-        <span className="web">
-          <StyledLink to="/challenge/web">웹해킹</StyledLink>
-        </span>
-        <span className="cryp">
-          <StyledLink to="/challenge/cryp">암호학</StyledLink>
-        </span>
-      </div>
-
-      <div className="contents">
-        <div className="qCnt">n개의 문제가 있습니다.</div>
-        <div className="questions">
-          <span>문제 번호</span>
-          <span>난이도</span>
-          <span>문제 제목</span>
-          <span>분야</span>
-        </div>
-
-        <Outlet />
-      </div>
-    </ChallengeSection>
-  );
+const Linux = () => {
+  return <LinuxSection></LinuxSection>;
 };
 
-export default Challenge;
+export default Linux;
