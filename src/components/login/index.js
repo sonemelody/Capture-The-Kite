@@ -1,17 +1,20 @@
 import styled from "styled-components";
-import { useLocation } from "react-router-dom";
+import Login from "./Login";
+import Register from "./Register";
 
-const LoginBox = styled.div`
-  background-color: #fafafa;
+const LoginSection = styled.div`
+  width: 400px;
+  margin: 50px auto 0;
+  min-height: 600px;
 `;
 
-const Login = () => {
-  const location = useLocation();
+const LoginSec = () => {
   return (
-    <LoginBox>
-      <p style={{ fontSize: "30px", textAlign: "center" }}>로그인</p>
-    </LoginBox>
+    <LoginSection>
+      <Login />
+      <Register />
+    </LoginSection>
   );
 };
 
-export default Login;
+export default LoginSec;

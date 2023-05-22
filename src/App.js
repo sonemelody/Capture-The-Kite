@@ -4,6 +4,7 @@ import Challenge from "./components/challenge";
 import Rank from "./components/rank";
 import Layout from "./components/layout";
 import Login from "./components/login";
+import Join from "./components/join";
 import Sys from "./components/challenge/sys";
 import Linux from "./components/challenge/linux";
 import Web from "./components/challenge/web";
@@ -24,6 +25,7 @@ const App = () => {
           <Route path="/all" element={<Challenge />} />
           <Route path="/rank" element={<Rank />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/join" element={<Join />} />
         </Route>
       </Routes>
     </BrowserRouter>

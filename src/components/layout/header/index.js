@@ -45,8 +45,7 @@ const HeaderSection = styled.header`
     margin: 0 30px 0 1rem;
     white-space: nowrap;
     border-radius: 3px;
-    background-color: #5c5ce7;
-    opacity: 0.8;
+    background-color: #7d7dec;
     color: white;
   }
   .challenge:hover,
@@ -57,7 +56,7 @@ const HeaderSection = styled.header`
   }
 
   .login:hover {
-    opacity: 1;
+    background-color: #5c5ce7;
   }
 `;
 
