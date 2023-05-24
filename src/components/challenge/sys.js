@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 
 const SysSection = styled.section`
   font-family: Pretendard-Bold;
@@ -58,11 +57,6 @@ const SysSection = styled.section`
       padding: 20px;
     }
   }
-`;
-
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
 `;
 
 const Sys = () => {

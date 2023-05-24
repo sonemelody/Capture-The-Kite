@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import Join from "./Join";
 
 const JoinSection = styled.div`
   width: 400px;
@@ -7,7 +8,11 @@ const JoinSection = styled.div`
 `;
 
 const JoinSec = () => {
-  return <JoinSection></JoinSection>;
+  return (
+    <JoinSection>
+      <Join />
+    </JoinSection>
+  );
 };
 
 export default JoinSec;

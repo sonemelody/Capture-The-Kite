@@ -52,7 +52,7 @@ const Login = () => {
       <LoginBtn email={email} setEmail={setEmail} pw={pw} setPw={setPw} />
       <div className="orBox">
         <hr />
-        <span>&nbsp;또는</span>
+        <span>&nbsp;&nbsp;또는</span>
         <hr />
       </div>
       <div className="forgetPw">

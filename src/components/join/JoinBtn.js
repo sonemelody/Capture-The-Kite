@@ -16,7 +16,7 @@ const Btn = styled.button`
   cursor: ${(props) => (props.disable ? "" : "pointer")};
 `;
 
-const LoginBtn = ({ email, pw, setEmail, setPw }) => {
+const JoinBtn = ({ email, pw, pwConfirm, setEmail, setPw, setPwConfirm }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const navigate = useNavigate();
   useEffect(() => {
@@ -24,18 +24,17 @@ const LoginBtn = ({ email, pw, setEmail, setPw }) => {
     else setIsDisabled(true);
   }, [email, pw]);
   const onClickBtn = () => {
-    if (email === "doyeon" && pw === "1234") {
-      alert("로그인 성공");
-      navigate("/");
-      setEmail("");
+    if (pw !== pwConfirm) {
+      alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
       setPw("");
-    } else alert("로그인 실패");
+      setPwConfirm("");
+    }
   };
   return (
     <Btn onClick={onClickBtn} disabled={isDisabled} disable={isDisabled}>
-      로그인
+      회원가입
     </Btn>
   );
 };
 
-export default LoginBtn;
+export default JoinBtn;
