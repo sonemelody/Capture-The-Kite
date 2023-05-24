@@ -28,6 +28,9 @@ const JoinBtn = ({ email, pw, pwConfirm, setEmail, setPw, setPwConfirm }) => {
       alert("비밀번호와 비밀번호 확인이 일치하지 않습니다.");
       setPw("");
       setPwConfirm("");
+    } else {
+      alert("정상적으로 회원가입 되었습니다.");
+      navigate("/");
     }
   };
   return (
