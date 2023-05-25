@@ -43,8 +43,8 @@ const ChallengeSection = styled.section`
     padding-bottom: 40px;
     .qCnt {
       font-family: Pretendard-Regular;
-      font-size: 15px;
-      padding: 50px 0 0 170px;
+      font-size: 16px;
+      margin: 40px 0 0 150px;
     }
     .questions {
       width: 1100px;
@@ -132,7 +132,7 @@ const Challenge = () => {
         </div>
 
         <div className="contents">
-          <div className="qCnt">n개의 문제가 있습니다.</div>
+          <div className="qCnt">총 {data.length}개의 문제가 있습니다.</div>
           <div className="questions">
             <Outlet />
             <div>
