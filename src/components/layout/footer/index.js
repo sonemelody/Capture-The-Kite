@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const FooterSection = styled.header`
+const FooterSection = styled.footer`
   width: 100%;
   height: 100px;
   margin: 0 auto;

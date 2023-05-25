@@ -80,23 +80,43 @@ const Rank = () => {
     <RankSection>
       <div className="rankHeader">
         전체 랭킹
-        <img src="/images/trophy.png" width="270px" height="auto" />
+        <img
+          src="/images/trophy.png"
+          width="270px"
+          height="auto"
+          alt="trophy"
+        />
       </div>
       <div className="rankTop">
         <div className="rankItemsTop">
-          <img src="/images/gold-medal.png" width="55px" height="auto" />
+          <img
+            src="/images/gold-medal.png"
+            width="55px"
+            height="auto"
+            alt="gold"
+          />
           <div className="profilePic"></div>
           <div className="profileName">닉네임</div>
           <div className="score">점수</div>
         </div>
         <div className="rankItemsTop">
-          <img src="/images/silver-medal.png" width="55px" height="auto" />
+          <img
+            src="/images/silver-medal.png"
+            width="55px"
+            height="auto"
+            alt="silver"
+          />
           <div className="profilePic"></div>
           <div className="profileName">닉네임</div>
           <div className="score">점수</div>
         </div>
         <div className="rankItemsTop">
-          <img src="/images/bronze-medal.png" width="55px" height="auto" />
+          <img
+            src="/images/bronze-medal.png"
+            width="55px"
+            height="auto"
+            alt="bronze"
+          />
           <div className="profilePic"></div>
           <div className="profileName">닉네임</div>
           <div className="score">점수</div>

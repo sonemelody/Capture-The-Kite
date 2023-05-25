@@ -1,5 +1,7 @@
 import styled from "styled-components";
+import React, { useState, useEffect } from "react";
 import { Link, Outlet } from "react-router-dom";
+import axios from "axios";
 
 const ChallengeSection = styled.section`
   font-family: Pretendard-Bold;
@@ -45,18 +47,36 @@ const ChallengeSection = styled.section`
       padding: 50px 0 0 170px;
     }
     .questions {
-      font-family: Pretendard-Bold;
       width: 1100px;
       height: auto;
       border-radius: 15px;
       background-color: white;
       box-shadow: 3px 3px 5px 3px #dedee6;
       margin: 20px auto;
-      display: grid;
-      grid-template-columns: repeat(4, auto);
-      grid-gap: 30px;
       padding: 20px;
     }
+    table {
+      width: 100%;
+      border-top: 1px solid #dedee6;
+      border-collapse: collapse;
+    }
+    th,
+    td {
+      border-bottom: 1px solid #dedee6;
+      padding: 15px;
+    }
+    th {
+      font-family: Pretendard-Regular;
+      text-align: left;
+      color: #c9c9c9;
+    }
+  }
+
+  .problemList {
+    list-style-type: none;
+  }
+  .problemList > li > span {
+    margin: 20px 50px;
   }
 `;
 
@@ -66,38 +86,104 @@ const StyledLink = styled(Link)`
 `;
 
 const Challenge = () => {
-  return (
-    <ChallengeSection>
-      <div className="challengeItems">
-        <span className="all">
-          <StyledLink to="/challenge">전체 문제</StyledLink>
-        </span>
-        <span className="sys">
-          <StyledLink to="/challenge/sys">시스템해킹</StyledLink>
-        </span>
-        <span className="linux">
-          <StyledLink to="/challenge/linux">리눅스</StyledLink>
-        </span>
-        <span className="web">
-          <StyledLink to="/challenge/web">웹해킹</StyledLink>
-        </span>
-        <span className="cryp">
-          <StyledLink to="/challenge/cryp">암호학</StyledLink>
-        </span>
-      </div>
+  const [data, setData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(null);
 
-      <div className="contents">
-        <div className="qCnt">n개의 문제가 있습니다.</div>
-        <div className="questions">
-          <span>문제 번호</span>
-          <span>난이도</span>
-          <span>문제 제목</span>
-          <span>분야</span>
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await axios.get("http://localhost:8000/api/problems/");
+      setData(response.data);
+    } catch (error) {
+      console.log("데이터를 불러오는 중에 오류가 발생했습니다.", error);
+    }
+  };
+
+  const handleClick = (problemId) => {
+    setCurrentPage(problemId);
+  };
+
+  const ProblemPage = () => {
+    return <div></div>;
+  };
+
+  return (
+    <>
+      <ChallengeSection>
+        <div className="challengeItems">
+          <span className="all">
+            <StyledLink to="/challenge">전체 문제</StyledLink>
+          </span>
+          <span className="sys">
+            <StyledLink to="/challenge/sys">시스템해킹</StyledLink>
+          </span>
+          <span className="linux">
+            <StyledLink to="/challenge/linux">리눅스</StyledLink>
+          </span>
+          <span className="web">
+            <StyledLink to="/challenge/web">웹해킹</StyledLink>
+          </span>
+          <span className="cryp">
+            <StyledLink to="/challenge/cryp">암호학</StyledLink>
+          </span>
         </div>
 
-        <Outlet />
-      </div>
-    </ChallengeSection>
+        <div className="contents">
+          <div className="qCnt">n개의 문제가 있습니다.</div>
+          <div className="questions">
+            <Outlet />
+            <div>
+              {currentPage ? (
+                <ProblemPage problemId={currentPage} />
+              ) : (
+                <table>
+                  <thead>
+                    <tr>
+                      <th>No.</th>
+                      <th>문제 제목</th>
+                      <th>배점</th>
+                      <th>분야</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {data.map((problem) => (
+                      <tr
+                        key={problem.problem_id}
+                        onClick={() => handleClick(problem.problem_id)}
+                      >
+                        <td>
+                          <StyledLink to={`/submit/${problem.problem_id}`}>
+                            {problem.problem_id}
+                          </StyledLink>
+                        </td>
+                        <td>
+                          <StyledLink to={`/submit/${problem.problem_id}`}>
+                            {problem.title}
+                          </StyledLink>
+                        </td>
+                        <td>
+                          <StyledLink to={`/submit/${problem.problem_id}`}>
+                            {problem.score}
+                          </StyledLink>
+                        </td>
+                        <td>
+                          <StyledLink to={`/submit/${problem.problem_id}`}>
+                            {problem.category}
+                          </StyledLink>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              )}
+            </div>
+          </div>
+        </div>
+      </ChallengeSection>
+    </>
   );
 };
 
