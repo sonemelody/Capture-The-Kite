@@ -10,6 +10,7 @@ import Sys from "./components/challenge/sys";
 import Linux from "./components/challenge/linux";
 import Cryp from "./components/challenge/cryp";
 import Web from "./components/challenge/web";
+import Account from "./components/account";
 
 const App = () => {
   return (
@@ -27,6 +28,7 @@ const App = () => {
           <Route path="/rank" element={<Rank />} />
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/account" element={<Account />} />
         </Route>
       </Routes>
     </BrowserRouter>

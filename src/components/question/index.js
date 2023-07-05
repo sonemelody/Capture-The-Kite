@@ -106,6 +106,7 @@ const SubmitSection = styled.section`
 const Submit = () => {
   const [problem, setProblem] = useState(null);
   const [inputValue, setInputValue] = useState("");
+  let score = 0;
 
   useEffect(() => {
     fetchProblemData()
@@ -130,9 +131,11 @@ const Submit = () => {
     event.preventDefault();
     if (inputValue === problem.flag) {
       alert("정답입니다!");
+      score = score + problem.score;
     } else {
       alert("오답입니다!");
     }
+    console.log(score);
     setInputValue("");
   };
 
@@ -153,7 +156,7 @@ const Submit = () => {
           <button className="qCategory" type="btn">
             {problem.category}
           </button>
-          <div clasName="qInfoDiv">
+          <div className="qInfoDiv">
             <span className="qInfoTitle">문제 정보</span>
             <span className="qInfoDetail">&nbsp;&nbsp;{problem.contents}</span>
           </div>
