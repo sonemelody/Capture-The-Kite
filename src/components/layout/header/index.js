@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 
 const HeaderSection = styled.header`
@@ -66,6 +67,11 @@ const StyledLink = styled(Link)`
 `;
 
 const Header = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
   return (
     <HeaderSection>
       <div className="navItems">
@@ -81,7 +87,11 @@ const Header = () => {
           </div>
         </div>
         <div className="login">
-          <StyledLink to="/login">로그인</StyledLink>
+          {isLoggedIn ? (
+            <button onClick={handleLogout}>로그아웃</button>
+          ) : (
+            <StyledLink to="/login">로그인</StyledLink>
+          )}
         </div>
       </div>
     </HeaderSection>

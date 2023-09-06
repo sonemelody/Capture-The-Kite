@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { useState } from "react";
 
 const InputBox = styled.div`
   margin-top: 30px;
@@ -8,6 +9,7 @@ const InputBox = styled.div`
     padding: 10px 0 10px 10px;
     box-sizing: border-box;
     width: 100%;
+    font-size: 14px;
     background-color: #fafafa;
     border: none;
     border: 1px solid #dfdfdf;
@@ -29,22 +31,47 @@ const InputBox = styled.div`
   .pwConfirm {
     margin-bottom: 18px;
   }
+  .email.error {
+    border: 1px solid red;
+    font-size: 14px;
+    color: red;
+  }
+  .error {
+    color: red;
+    font-size: 12px;
+    margin-top: 12px;
+    margin-bottom: 12px;
+  }
 `;
 
 const JoinInput = ({ email, pw, pwConfirm, setEmail, setPw, setPwConfirm }) => {
+  const [emailError, setEmailError] = useState("");
+
   const onChangeEmail = (e) => {
-    setEmail(e.target.value);
+    const newEmail = e.target.value;
+    setEmail(newEmail);
+
+    const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
+
+    if (newEmail === "") {
+      setEmailError("");
+    } else if (!emailRegex.test(newEmail)) {
+      setEmailError("⚠️ 올바른 이메일 형식이 아닙니다.");
+    } else {
+      setEmailError("");
+    }
   };
 
   return (
     <InputBox>
       <input
         type="text"
-        className="email"
+        className={`email ${emailError ? "error" : ""}`}
         placeholder="이메일을 입력해주세요"
         onChange={onChangeEmail}
         value={email}
       />
+      {emailError && <div className="error">{emailError}</div>}
       <input
         type="password"
         className="pw"
