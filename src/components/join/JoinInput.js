@@ -25,6 +25,12 @@ const InputBox = styled.div`
   .email {
     margin-bottom: 12px;
   }
+  .nm {
+    margin-bottom: 12px;
+  }
+  .nickname {
+    margin-bottom: 12px;
+  }
   .pw {
     margin-bottom: 12px;
   }
@@ -44,7 +50,18 @@ const InputBox = styled.div`
   }
 `;
 
-const JoinInput = ({ email, pw, pwConfirm, setEmail, setPw, setPwConfirm }) => {
+const JoinInput = ({
+  email,
+  pw,
+  pwConfirm,
+  nm,
+  nickname,
+  setEmail,
+  setPw,
+  setPwConfirm,
+  setNm,
+  setNickname,
+}) => {
   const [emailError, setEmailError] = useState("");
 
   const onChangeEmail = (e) => {
@@ -72,6 +89,24 @@ const JoinInput = ({ email, pw, pwConfirm, setEmail, setPw, setPwConfirm }) => {
         value={email}
       />
       {emailError && <div className="error">{emailError}</div>}
+      <input
+        type="text"
+        className="nm"
+        placeholder="이름을 입력해주세요"
+        onChange={(e) => {
+          setNm(e.target.value);
+        }}
+        value={nm}
+      />
+      <input
+        type="text"
+        className="nickname"
+        placeholder="닉네임을 입력해주세요"
+        onChange={(e) => {
+          setNickname(e.target.value);
+        }}
+        value={nickname}
+      />
       <input
         type="password"
         className="pw"

@@ -28,23 +28,20 @@ const LoginBtn = ({ email, pw, setEmail, setPw }) => {
 
   const onClickBtn = async () => {
     try {
-      const response = await axios.get("http://localhost:8000/admin/login/", {
+      const response = await axios.post("http://localhost:8000/user/login/", {
         email,
         password: pw,
       });
 
       if (response.status === 200) {
-        // 로그인 성공
         alert("로그인 성공");
         navigate("/");
         setEmail("");
         setPw("");
       } else {
-        // 로그인 실패
         alert("로그인 실패");
       }
     } catch (error) {
-      // 요청 실패 또는 오류 처리
       console.error("로그인 요청 오류:", error);
     }
   };
