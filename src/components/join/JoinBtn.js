@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
 
-const StyledButton = styled.button`
+const Btn = styled.button`
   width: 100%;
   padding: 15px 0;
   border-radius: 8px;
@@ -62,13 +62,9 @@ const JoinBtn = ({ email, pw, pwConfirm, nm, nickname }) => {
   };
 
   return (
-    <StyledButton
-      onClick={onClickBtn}
-      disabled={isDisabled}
-      disable={isDisabled}
-    >
+    <Btn onClick={onClickBtn} disabled={isDisabled} disable={isDisabled}>
       회원가입
-    </StyledButton>
+    </Btn>
   );
 };
 

@@ -1,6 +1,8 @@
 import styled from "styled-components";
-import { useState } from "react";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 const HeaderSection = styled.header`
   width: 100%;
@@ -55,8 +57,8 @@ const HeaderSection = styled.header`
     border-radius: 4px;
     transition: all 0.1s ease-in-out;
   }
-
-  .login:hover {
+  .login:hover,
+  .logout:hover {
     background-color: #5c5ce7;
   }
 `;
@@ -67,11 +69,26 @@ const StyledLink = styled(Link)`
 `;
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [auth, setAuth] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("token") !== null) {
+      setAuth(true);
+    }
+  }, []);
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    axios
+      .post("http://localhost:8000/user/logout/")
+      .then((res) => {
+        localStorage.clear();
+        window.location.replace("/");
+      })
+      .catch((error) => {
+        console.error("로그아웃 요청 오류:", error);
+      });
   };
+
   return (
     <HeaderSection>
       <div className="navItems">
@@ -87,8 +104,10 @@ const Header = () => {
           </div>
         </div>
         <div className="login">
-          {isLoggedIn ? (
-            <button onClick={handleLogout}>로그아웃</button>
+          {auth ? (
+            <StyledLink className="logout" onClick={handleLogout}>
+              로그아웃
+            </StyledLink>
           ) : (
             <StyledLink to="/login">로그인</StyledLink>
           )}

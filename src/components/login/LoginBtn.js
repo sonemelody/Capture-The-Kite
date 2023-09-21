@@ -17,7 +17,7 @@ const Btn = styled.button`
   cursor: ${(props) => (props.disable ? "" : "pointer")};
 `;
 
-const LoginBtn = ({ email, pw, setEmail, setPw }) => {
+const LoginBtn = ({ email, pw, setEmail, setPw, token }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const navigate = useNavigate();
 
@@ -28,21 +28,35 @@ const LoginBtn = ({ email, pw, setEmail, setPw }) => {
 
   const onClickBtn = async () => {
     try {
-      const response = await axios.post("http://localhost:8000/user/login/", {
-        email,
-        password: pw,
-      });
+      const response = await axios.post(
+        "http://localhost:8000/user/login/",
+        {
+          email: email,
+          password: pw,
+        },
+        {
+          withCredentials: true,
+        },
+        {
+          headers: {
+            Authorization: `Token ${token}`,
+          },
+        }
+      );
 
       if (response.status === 200) {
         alert("로그인 성공");
-        navigate("/");
         setEmail("");
         setPw("");
+        localStorage.clear();
+        localStorage.setItem("token", response.status === 200);
+        navigate("/");
       } else {
-        alert("로그인 실패");
+        localStorage.clear();
+        alert("로그인 실패: 아이디 또는 비밀번호가 일치하지 않습니다.");
       }
     } catch (error) {
-      console.error("로그인 요청 오류:", error);
+      alert("로그인 요청 중 오류가 발생했습니다.");
     }
   };
 
