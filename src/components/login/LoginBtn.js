@@ -17,7 +17,7 @@ const Btn = styled.button`
   cursor: ${(props) => (props.disable ? "" : "pointer")};
 `;
 
-const LoginBtn = ({ email, pw, setEmail, setPw, token }) => {
+const LoginBtn = ({ email, pw, setEmail, setPw }) => {
   const [isDisabled, setIsDisabled] = useState(true);
   const navigate = useNavigate();
 
@@ -36,20 +36,16 @@ const LoginBtn = ({ email, pw, setEmail, setPw, token }) => {
         },
         {
           withCredentials: true,
-        },
-        {
-          headers: {
-            Authorization: `Token ${token}`,
-          },
         }
       );
 
       if (response.status === 200) {
+        const token = response.data.token;
+        localStorage.setItem("token", token);
+        console.log("저장된 토큰:", token);
         alert("로그인 성공");
         setEmail("");
         setPw("");
-        localStorage.clear();
-        localStorage.setItem("token", response.status === 200);
         navigate("/");
       } else {
         localStorage.clear();
@@ -61,9 +57,11 @@ const LoginBtn = ({ email, pw, setEmail, setPw, token }) => {
   };
 
   return (
-    <Btn onClick={onClickBtn} disabled={isDisabled} disable={isDisabled}>
-      로그인
-    </Btn>
+    <div>
+      <Btn onClick={onClickBtn} disabled={isDisabled} disable={isDisabled}>
+        로그인
+      </Btn>
+    </div>
   );
 };
 

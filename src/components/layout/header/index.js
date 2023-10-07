@@ -2,7 +2,6 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useEffect } from "react";
-import axios from "axios";
 
 const HeaderSection = styled.header`
   width: 100%;
@@ -39,11 +38,12 @@ const HeaderSection = styled.header`
     font-size: 1.3rem;
   }
   .challenge,
-  .rank {
+  .rank,
+  .account {
     padding: 0.7rem 1rem;
     white-space: nowrap;
   }
-  .login {
+  .auth {
     padding: 0.5rem 0.7rem;
     margin: 0 30px 0 1rem;
     white-space: nowrap;
@@ -51,14 +51,17 @@ const HeaderSection = styled.header`
     background-color: #7d7dec;
     color: white;
   }
+  .logout {
+    z-index: 10;
+  }
   .challenge:hover,
-  .rank:hover {
+  .rank:hover,
+  .account:hover {
     color: #5c5ce7;
     border-radius: 4px;
     transition: all 0.1s ease-in-out;
   }
-  .login:hover,
-  .logout:hover {
+  .auth:hover {
     background-color: #5c5ce7;
   }
 `;
@@ -69,24 +72,20 @@ const StyledLink = styled(Link)`
 `;
 
 const Header = () => {
-  const [auth, setAuth] = useState("");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    if (localStorage.getItem("token") !== null) {
-      setAuth(true);
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    } else {
+      setIsLoggedIn(false);
     }
   }, []);
 
   const handleLogout = () => {
-    axios
-      .post("http://localhost:8000/user/logout/")
-      .then((res) => {
-        localStorage.clear();
-        window.location.replace("/");
-      })
-      .catch((error) => {
-        console.error("로그아웃 요청 오류:", error);
-      });
+    localStorage.removeItem("token");
+    setIsLoggedIn(false);
   };
 
   return (
@@ -102,19 +101,25 @@ const Header = () => {
           <div className="rank">
             <StyledLink to="/rank">RANK</StyledLink>
           </div>
+          {isLoggedIn && (
+            <div className="account">
+              <StyledLink to="/account">MY PAGE</StyledLink>
+            </div>
+          )}
         </div>
-        <div className="login">
-          {auth ? (
+        <div className="auth">
+          {isLoggedIn ? (
             <StyledLink className="logout" onClick={handleLogout}>
               로그아웃
             </StyledLink>
           ) : (
-            <StyledLink to="/login">로그인</StyledLink>
+            <StyledLink to="/login" className="login">
+              로그인
+            </StyledLink>
           )}
         </div>
       </div>
     </HeaderSection>
   );
 };
-
 export default Header;
