@@ -158,7 +158,10 @@ const Submit = () => {
           </button>
           <div className="qInfoDiv">
             <span className="qInfoTitle">문제 정보</span>
-            <span className="qInfoDetail">&nbsp;&nbsp;{problem.contents}</span>
+            <span className="qInfoDetail">
+              <p />
+              {problem.contents}
+            </span>
           </div>
           <div className="qPathDiv">
             <span className="qPathTitle">ssh_path</span>

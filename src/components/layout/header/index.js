@@ -1,7 +1,6 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
-import { useState } from "react";
-import { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const HeaderSection = styled.header`
   width: 100%;
@@ -73,6 +72,7 @@ const StyledLink = styled(Link)`
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -86,6 +86,7 @@ const Header = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
+    navigate("/");
   };
 
   return (

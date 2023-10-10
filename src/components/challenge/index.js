@@ -18,21 +18,35 @@ const ChallengeSection = styled.section`
       color: white;
       background-color: #5c5ce7;
     }
-    .sys,
-    .linux,
-    .web,
-    .cryp {
-      font-size: 20px;
-    }
+  }
+  .sys,
+  .linux,
+  .web,
+  .cryp {
+    font-size: 20px;
   }
   .challengeItems > span {
     margin: 30px;
   }
-  .sys:hover,
-  .linux:hover,
-  .web:hover,
-  .cryp:hover {
+  .challengeItems > span:hover {
     color: #5c5ce7;
+    cursor: pointer;
+  }
+  .selectedCategory {
+    color: #5c5ce7;
+    font-size: 20px;
+  }
+  .selectedAll {
+    font-size: 22px;
+    border: 1px solid #5c5ce7;
+    border-radius: 30px;
+    padding: 22px 8px 22px 8px;
+    color: white;
+    background-color: #5c5ce7;
+  }
+  .selectedAll:hover {
+    color: #5c5ce7;
+    background-color: white;
   }
   .contents {
     background-color: #f0f0f5;
@@ -60,15 +74,22 @@ const ChallengeSection = styled.section`
       border-top: 1px solid #dedee6;
       border-collapse: collapse;
     }
+
     th,
     td {
       border-bottom: 1px solid #dedee6;
       padding: 15px;
     }
     th {
-      font-family: Pretendard-Regular;
       text-align: left;
       color: #c9c9c9;
+    }
+    .th-no {
+      width: 15%;
+    }
+
+    .th-title {
+      width: 40%;
     }
   }
 
@@ -88,6 +109,7 @@ const StyledLink = styled(Link)`
 const Challenge = () => {
   const [data, setData] = useState([]);
   const [currentPage, setCurrentPage] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("all"); // Default category is 'all'
 
   useEffect(() => {
     fetchData();
@@ -106,6 +128,22 @@ const Challenge = () => {
     setCurrentPage(problemId);
   };
 
+  const filterData = () => {
+    if (selectedCategory === "all") {
+      return data;
+    } else {
+      return data.filter((problem) => problem.category === selectedCategory);
+    }
+  };
+
+  const getCategoryProblemCount = (category) => {
+    if (category === "all") {
+      return data.length;
+    } else {
+      return data.filter((problem) => problem.category === category).length;
+    }
+  };
+
   const ProblemPage = () => {
     return <div></div>;
   };
@@ -114,25 +152,47 @@ const Challenge = () => {
     <>
       <ChallengeSection>
         <div className="challengeItems">
-          <span className="all">
-            <StyledLink to="/challenge">전체 문제</StyledLink>
+          <span
+            className={selectedCategory === "all" ? "selectedAll" : "all"}
+            onClick={() => setSelectedCategory("all")}
+          >
+            전체 문제
           </span>
-          <span className="sys">
-            <StyledLink to="/challenge/sys">시스템해킹</StyledLink>
+          <span
+            className={
+              selectedCategory === "System" ? "selectedCategory" : "sys"
+            }
+            onClick={() => setSelectedCategory("System")}
+          >
+            시스템
           </span>
-          <span className="linux">
-            <StyledLink to="/challenge/linux">리눅스</StyledLink>
+          <span
+            className={
+              selectedCategory === "Linux" ? "selectedCategory" : "linux"
+            }
+            onClick={() => setSelectedCategory("Linux")}
+          >
+            리눅스
           </span>
-          <span className="web">
-            <StyledLink to="/challenge/web">웹해킹</StyledLink>
+          <span
+            className={selectedCategory === "Web" ? "selectedCategory" : "web"}
+            onClick={() => setSelectedCategory("Web")}
+          >
+            웹
           </span>
-          <span className="cryp">
-            <StyledLink to="/challenge/cryp">암호학</StyledLink>
+          <span
+            className={
+              selectedCategory === "Crypto" ? "selectedCategory" : "cryp"
+            }
+            onClick={() => setSelectedCategory("Crypto")}
+          >
+            암호학
           </span>
         </div>
-
         <div className="contents">
-          <div className="qCnt">총 {data.length}개의 문제가 있습니다.</div>
+          <div className="qCnt">
+            총 {getCategoryProblemCount(selectedCategory)}개의 문제가 있습니다.
+          </div>
           <div className="questions">
             <Outlet />
             <div>
@@ -142,14 +202,14 @@ const Challenge = () => {
                 <table>
                   <thead>
                     <tr>
-                      <th>No.</th>
-                      <th>문제 제목</th>
-                      <th>배점</th>
-                      <th>분야</th>
+                      <th className="th-no">No.</th>
+                      <th className="th-title">문제 제목</th>
+                      <th className="th-score">배점</th>
+                      <th className="th-category">분야</th>
                     </tr>
                   </thead>
                   <tbody>
-                    {data.map((problem) => (
+                    {filterData().map((problem) => (
                       <tr
                         key={problem.problem_id}
                         onClick={() => handleClick(problem.problem_id)}
