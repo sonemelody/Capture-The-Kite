@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import axios from "axios";
 
 const SubmitSection = styled.section`
   font-family: Pretendard-Bold;
@@ -106,7 +107,7 @@ const SubmitSection = styled.section`
 const Submit = () => {
   const [problem, setProblem] = useState(null);
   const [inputValue, setInputValue] = useState("");
-  let score = 0;
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     fetchProblemData()
@@ -116,26 +117,35 @@ const Submit = () => {
       .catch((error) => {
         console.error("문제 데이터를 가져오는 중 오류가 발생했습니다.", error);
       });
+
+    const token = localStorage.getItem("token");
+    if (token) {
+      setIsLoggedIn(true);
+    }
   }, []);
 
   const fetchProblemData = async () => {
     const problemId = window.location.pathname.split("/").pop();
-    const response = await fetch(
+    const response = await axios.get(
       `http://localhost:8000/api/problems/${problemId}/`
     );
-    const data = await response.json();
+    const data = response.data;
     return data;
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    if (!isLoggedIn) {
+      alert("로그인이 필요합니다.");
+      window.location.href = "http://localhost:3000/login";
+      return;
+    }
+
     if (inputValue === problem.flag) {
       alert("정답입니다!");
-      score = score + problem.score;
     } else {
       alert("오답입니다!");
     }
-    console.log(score);
     setInputValue("");
   };
 
@@ -144,7 +154,7 @@ const Submit = () => {
   };
 
   if (!problem) {
-    return <div>Loading...</div>; // 데이터를 가져오는 동안 로딩 표시
+    return <div>Loading...</div>;
   }
 
   return (
@@ -175,7 +185,6 @@ const Submit = () => {
       <section className="submitAnswer">
         <img src="/images/kite.png" alt="kite" className="kite" />
         <span className="submitTitle">KITE를 입력하세요</span>
-
         <form onSubmit={handleSubmit} className="submitKite">
           <input
             className="inputForm"
