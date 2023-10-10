@@ -1,6 +1,6 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const ChallengeSection = styled.section`
@@ -18,12 +18,12 @@ const ChallengeSection = styled.section`
       color: white;
       background-color: #5c5ce7;
     }
-  }
-  .sys,
-  .linux,
-  .web,
-  .cryp {
-    font-size: 20px;
+    .sys,
+    .linux,
+    .web,
+    .cryp {
+      font-size: 20px;
+    }
   }
   .challengeItems > span {
     margin: 30px;
@@ -74,7 +74,6 @@ const ChallengeSection = styled.section`
       border-top: 1px solid #dedee6;
       border-collapse: collapse;
     }
-
     th,
     td {
       border-bottom: 1px solid #dedee6;
@@ -91,13 +90,6 @@ const ChallengeSection = styled.section`
     .th-title {
       width: 40%;
     }
-  }
-
-  .problemList {
-    list-style-type: none;
-  }
-  .problemList > li > span {
-    margin: 20px 50px;
   }
 `;
 
@@ -194,7 +186,6 @@ const Challenge = () => {
             총 {getCategoryProblemCount(selectedCategory)}개의 문제가 있습니다.
           </div>
           <div className="questions">
-            <Outlet />
             <div>
               {currentPage ? (
                 <ProblemPage problemId={currentPage} />

@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { useState, useEffect } from "react";
+import axios from "axios";
 
 const RankSection = styled.section`
   background-color: #caeeb2;
@@ -32,16 +34,6 @@ const RankSection = styled.section`
     position: relative;
     box-shadow: 3px 3px 5px 3px #dedee6;
   }
-  .profilePic {
-    width: 150px;
-    height: 150px;
-    border-radius: 75px;
-    background-color: lightgray;
-    display: inline-block;
-    position: absolute;
-    top: 40px;
-    left: 60px;
-  }
   .profileName {
     font-size: 30px;
     display: block;
@@ -63,19 +55,81 @@ const RankSection = styled.section`
   .rankItemsOthers {
     font-family: Pretendard-Bold;
     width: 990px;
-    height: 280px;
+    height: auto;
     border-radius: 15px;
     background-color: white;
     box-shadow: 3px 3px 5px 3px #dedee6;
-    margin: 0 auto;
-
-    .category {
-      margin: 30px;
-    }
+    margin: 0px auto;
+    padding: 20px;
+  }
+  table {
+    width: 100%;
+    border-top: 1px solid #dedee6;
+    border-collapse: collapse;
+  }
+  th,
+  td {
+    border-bottom: 1px solid #dedee6;
+    padding: 15px;
+  }
+  th {
+    text-align: left;
+    color: #c9c9c9;
   }
 `;
 
 const Rank = () => {
+  const [rankings, setRankings] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const linuxRankings = await axios.get(
+        "http://127.0.0.1:8000/api/ranking/Linux/"
+      );
+      const cryptoRankings = await axios.get(
+        "http://127.0.0.1:8000/api/ranking/Crypto/"
+      );
+      const webRankings = await axios.get(
+        "http://127.0.0.1:8000/api/ranking/Web/"
+      );
+      const systemRankings = await axios.get(
+        "http://127.0.0.1:8000/api/ranking/System/"
+      );
+
+      const combinedRankings = [
+        ...linuxRankings.data,
+        ...cryptoRankings.data,
+        ...webRankings.data,
+        ...systemRankings.data,
+      ];
+
+      const scoreMap = new Map();
+      combinedRankings.forEach((item) => {
+        if (scoreMap.has(item.user)) {
+          scoreMap.set(item.user, scoreMap.get(item.user) + item.score);
+        } else {
+          scoreMap.set(item.user, item.score);
+        }
+      });
+
+      const sortedRankings = [...scoreMap.entries()].map(([user, score]) => ({
+        user,
+        score,
+      }));
+      sortedRankings.sort((a, b) => b.score - a.score);
+
+      setRankings(sortedRankings);
+      setLoading(false);
+    } catch (error) {
+      console.error("랭킹 정보를 불러오는 중에 오류가 발생했습니다.", error);
+    }
+  };
+
   return (
     <RankSection>
       <div className="rankHeader">
@@ -88,45 +142,45 @@ const Rank = () => {
         />
       </div>
       <div className="rankTop">
-        <div className="rankItemsTop">
-          <img
-            src="/images/gold-medal.png"
-            width="55px"
-            height="auto"
-            alt="gold"
-          />
-          <div className="profilePic"></div>
-          <div className="profileName">닉네임</div>
-          <div className="score">점수</div>
-        </div>
-        <div className="rankItemsTop">
-          <img
-            src="/images/silver-medal.png"
-            width="55px"
-            height="auto"
-            alt="silver"
-          />
-          <div className="profilePic"></div>
-          <div className="profileName">닉네임</div>
-          <div className="score">점수</div>
-        </div>
-        <div className="rankItemsTop">
-          <img
-            src="/images/bronze-medal.png"
-            width="55px"
-            height="auto"
-            alt="bronze"
-          />
-          <div className="profilePic"></div>
-          <div className="profileName">닉네임</div>
-          <div className="score">점수</div>
-        </div>
+        {loading ? (
+          <p>Loading...</p>
+        ) : (
+          rankings.slice(0, 3).map((rank, index) => (
+            <div className="rankItemsTop" key={index}>
+              <img
+                src={`/images/${getMedalImage(index)}.png`}
+                width="170px"
+                height="auto"
+                style={{ display: "block", margin: "0 auto" }}
+                alt={getMedalAlt(index)}
+              />
+              <div className="profileName">{rank.user}</div>
+              <div className="score">{rank.score}점</div>
+            </div>
+          ))
+        )}
       </div>
       <div className="rankOthers">
         <div className="rankItemsOthers">
-          <span className="category">순위</span>
-          <span className="category">닉네임</span>
-          <span className="category">점수</span>
+          <table>
+            <thead>
+              <tr>
+                <th>순위</th>
+                <th>닉네임</th>
+                <th>점수</th>
+              </tr>
+            </thead>
+            <tbody>
+              {!loading &&
+                rankings.slice(3).map((rank, index) => (
+                  <tr key={index}>
+                    <td>{index + 4}</td>
+                    <td>{rank.user}</td>
+                    <td>{rank.score}점</td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </RankSection>
@@ -134,3 +188,13 @@ const Rank = () => {
 };
 
 export default Rank;
+
+function getMedalImage(index) {
+  const medals = ["gold-medal", "silver-medal", "bronze-medal"];
+  return index < 3 ? medals[index] : "";
+}
+
+function getMedalAlt(index) {
+  const altText = ["Gold Medal", "Silver Medal", "Bronze Medal"];
+  return index < 3 ? altText[index] : "";
+}
