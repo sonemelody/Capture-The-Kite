@@ -4,6 +4,7 @@ import { useState } from "react";
 const InputBox = styled.div`
   margin-top: 30px;
   input {
+    font-family: Pretendard-Regular;
     display: block;
     border-radius: 4px;
     padding: 10px 0 10px 10px;
@@ -11,7 +12,6 @@ const InputBox = styled.div`
     width: 100%;
     font-size: 14px;
     background-color: #fafafa;
-    border: none;
     border: 1px solid #dfdfdf;
     &::placeholder {
       font-size: 12px;

@@ -36,6 +36,9 @@ const LoginBtn = ({ email, pw, setEmail, setPw }) => {
         },
         {
           withCredentials: true,
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
 

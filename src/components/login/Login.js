@@ -2,6 +2,7 @@ import styled from "styled-components";
 import LoginInput from "./LoginInput";
 import LoginBtn from "./LoginBtn";
 import { useState } from "react";
+import { Link } from "react-router-dom";
 
 const LoginBox = styled.div`
   border: 1px solid #dbdbdb;
@@ -39,7 +40,16 @@ const LoginBox = styled.div`
       font-size: 14px;
       margin-top: 10px;
     }
+    a:hover {
+      color: #5c5ce7;
+      font-weight: bold;
+    }
   }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
 `;
 
 const Login = () => {
@@ -56,7 +66,7 @@ const Login = () => {
         <hr />
       </div>
       <div className="forgetPw">
-        <a href="#">비밀번호를 잊으셨나요?</a>
+        <StyledLink to="/passwd">비밀번호를 잊으셨나요?</StyledLink>
       </div>
     </LoginBox>
   );

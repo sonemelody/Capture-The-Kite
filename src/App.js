@@ -7,6 +7,7 @@ import Login from "./components/login";
 import Join from "./components/join";
 import Submit from "./components/question";
 import Account from "./components/account";
+import PasswdSec from "./components/passwd";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
           <Route path="/rank" element={<Rank />} />
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
+          <Route path="/passwd" element={<PasswdSec />} />
           <Route path="/account" element={<Account />} />
         </Route>
       </Routes>
