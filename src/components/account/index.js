@@ -1,81 +1,70 @@
 import styled from "styled-components";
 import React, { useState, useEffect } from "react";
-import { Link, Outlet } from "react-router-dom";
 import axios from "axios";
 
 const AccountSection = styled.section`
-  .acntHeader {
-    font-family: Pretendard-Bold;
-    font-size: 40px;
-    margin: 40px 0px 20px 110px;
-  }
+  background-color: #f0f0f5;
   .acntBody {
-    background-color: #f0f0f5;
+    font-family: Pretendard-Regular;
     width: 100%;
     height: auto;
     overflow: hidden;
-    margin-top: 40px;
     padding-bottom: 40px;
-
-    .tab-menu {
-      margin: 40px 0 0 110px;
-      display: flex;
+  }
+  .acntContent {
+    font-size: 19px;
+    width: 1100px;
+    height: auto;
+    border-radius: 15px;
+    background-color: white;
+    box-shadow: 3px 3px 5px 3px #dedee6;
+    margin: 40px auto 0 auto;
+    padding: 20px;
+  }
+  .userInfo {
+    margin: 30px 30px 80px 30px;
+    td {
+      padding: 0 100px 20px 0;
     }
-
-    .tab-button {
-      font-family: Pretendard-Bold;
-      font-size: 20px;
-      border: none;
-      border-radius: 3px;
-      outline: none;
-      cursor: pointer;
-      padding: 10px 20px;
-      margin-right: 10px;
-      transition: background-color 0.3s;
-    }
-
-    .tab-button:hover {
-      background-color: #7d7dec;
-      color: white;
-    }
-
-    .tab-button.active {
-      background-color: #7d7dec;
-      color: white;
-      border: none solid #000;
-    }
-
-    .tab-content {
-      display: none;
-      padding: 20px;
-    }
-
-    .tab-content h3 {
-      margin-top: 0;
-    }
-
-    .tab-content p {
-      margin-bottom: 0;
+  }
+  .userScore {
+    margin: 50px 30px 30px 30px;
+  }
+  .infoTitle,
+  .scoreTitle {
+    margin-bottom: 50px;
+  }
+  .subtitle {
+    font-family: Pretendard-Bold;
+  }
+  .score {
+    text-align: center;
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid #dedee6;
+    td {
+      border-bottom: 1px solid #dedee6;
+      padding: 15px;
+      width: 20%;
     }
   }
 `;
 
-const StyledLink = styled(Link)`
-  text-decoration: none;
-  color: inherit;
-`;
-
 const Account = () => {
-  const [activeTab, setActiveTab] = useState("points");
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
-  const openTab = (tabName) => {
-    setActiveTab(tabName);
-  };
 
   useEffect(() => {
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Token ${token}`,
+    };
+
     axios
-      .get("http://127.0.0.1:8000/user/profile/", { withCredentials: true })
+      .get("http://127.0.0.1:8000/user/profile/", {
+        withCredentials: true,
+        headers: headers,
+      })
       .then((response) => {
         const { profile, scores } = response.data;
         setUserData({ profile, scores });
@@ -88,51 +77,54 @@ const Account = () => {
   }, []);
 
   return (
-    <>
-      <AccountSection>
-        <div className="acntHeader">My Page</div>
-
-        <div className="acntBody">
-          <div className="tab-menu">
-            <button
-              className={`tab-button ${activeTab === "points" ? "active" : ""}`}
-              onClick={() => openTab("points")}
-            >
-              Points
-            </button>
-            <button
-              className={`tab-button ${activeTab === "myinfo" ? "active" : ""}`}
-              onClick={() => openTab("myinfo")}
-            >
-              My Info
-            </button>
-
+    <AccountSection>
+      <div className="acntBody">
+        <div className="acntContent">
+          {loading ? (
+            <p>데이터를 불러오는 중입니다...</p>
+          ) : (
             <div>
-              {loading ? (
-                <p>데이터를 불러오는 중입니다...</p>
-              ) : userData ? (
-                activeTab === "myinfo" ? (
-                  <div>
-                    <p>Email: {userData.profile.email}</p>
-                    <p>Nickname: {userData.profile.nickname}</p>
-                    <h3>Scores</h3>
-                    <p>Crypto Score: {userData.scores.crypto_score}</p>
-                    <p>Linux Score: {userData.scores.linux_score}</p>
-                    <p>Web Score: {userData.scores.web_score}</p>
-                    <p>System Score: {userData.scores.system_score}</p>
-                    <p>Total Score: {userData.scores.total_score}</p>
-                  </div>
-                ) : (
-                  <p>점수 정보를 불러오는 중입니다...</p>
-                )
-              ) : (
-                <p>사용자 정보를 불러오는 중입니다...</p>
-              )}
+              <div className="userInfo">
+                <h2 className="infoTitle">내 정보</h2>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td className="subtitle">EMAIL</td>
+                      <td>{userData.profile.email}</td>
+                    </tr>
+                    <tr>
+                      <td className="subtitle">NICKNAME</td>
+                      <td>{userData.profile.nickname}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div className="userScore">
+                <h2 className="scoreTitle">내 점수</h2>
+                <table className="score">
+                  <tbody>
+                    <tr className="subtitle">
+                      <td>Crypto</td>
+                      <td>Linux</td>
+                      <td>Web</td>
+                      <td>System</td>
+                      <td style={{ backgroundColor: "#caeeb2" }}>Total</td>
+                    </tr>
+                    <tr>
+                      <td>{userData.scores.crypto_score}</td>
+                      <td>{userData.scores.linux_score}</td>
+                      <td>{userData.scores.web_score}</td>
+                      <td>{userData.scores.system_score}</td>
+                      <td>{userData.scores.total_score}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
+          )}
         </div>
-      </AccountSection>
-    </>
+      </div>
+    </AccountSection>
   );
 };
 
