@@ -1,5 +1,6 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 
 const SubmitSection = styled.section`
@@ -102,17 +103,39 @@ const SubmitSection = styled.section`
       background-color: #5c5ce7;
     }
   }
+  .getPortBtn {
+    padding: 0.5rem 0.7rem;
+    margin: 0 30px 0 10px;
+    white-space: nowrap;
+    border-radius: 3px;
+    border: solid #7d7dec 1px;
+    color: #7d7dec;
+    background-color: white;
+  }
+  .getPortBtn:hover {
+    background-color: #7d7dec;
+    color: white;
+  }
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  color: inherit;
 `;
 
 const Submit = () => {
   const [problem, setProblem] = useState(null);
   const [inputValue, setInputValue] = useState("");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [webProblem, setWebProblem] = useState(false);
 
   useEffect(() => {
     fetchProblemData()
       .then((data) => {
         setProblem(data);
+        if (data.category === "Web") {
+          setWebProblem(true);
+        }
       })
       .catch((error) => {
         console.error("문제 데이터를 가져오는 중 오류가 발생했습니다.", error);
@@ -131,6 +154,34 @@ const Submit = () => {
     );
     const data = response.data;
     return data;
+  };
+
+  const handleLoadPort = () => {
+    const portId = problem.problem_id - 200;
+    const Endpoint = `http://localhost:900${portId}`;
+    const portEndpoint = `http://localhost:900${portId}/port`;
+
+    fetch(Endpoint, { withCredentials: true })
+      .then((response) => {
+        if (response.ok) {
+          return fetch(portEndpoint, { withCredentials: true });
+        } else {
+          throw new Error("첫 번째 요청 실패");
+        }
+      })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error("두 번째 요청 실패");
+        }
+      })
+      .then((data) => {
+        alert(`할당된 포트: ${data.port}`);
+      })
+      .catch((error) => {
+        alert("포트 정보를 가져오는 중 오류가 발생했습니다.", error);
+      });
   };
 
   const handleSubmit = async (event) => {
@@ -188,8 +239,15 @@ const Submit = () => {
           <div className="qInfoDiv">
             <span className="qInfoTitle">문제 정보</span>
             <span className="qInfoDetail">
-              <p />
-              {problem.contents}
+              {webProblem ? (
+                <StyledLink className="getPortBtn" onClick={handleLoadPort}>
+                  문제 정보 불러오기
+                </StyledLink>
+              ) : (
+                <StyledLink className="getPortBtn" onClick={handleLoadPort}>
+                  문제 정보 불러오기
+                </StyledLink>
+              )}
             </span>
           </div>
           <div className="qPathDiv">
