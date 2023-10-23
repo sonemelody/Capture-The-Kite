@@ -45,7 +45,6 @@ const LoginBtn = ({ email, pw, setEmail, setPw }) => {
       if (response.status === 200) {
         const token = response.data.token;
         localStorage.setItem("token", token);
-        console.log("저장된 토큰:", token);
         alert("로그인 성공");
         setEmail("");
         setPw("");

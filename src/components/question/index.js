@@ -133,7 +133,7 @@ const Submit = () => {
     return data;
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     if (!isLoggedIn) {
       alert("로그인이 필요합니다.");
@@ -141,10 +141,29 @@ const Submit = () => {
       return;
     }
 
-    if (inputValue === problem.flag) {
-      alert("정답입니다!");
-    } else {
-      alert("오답입니다!");
+    const token = localStorage.getItem("token");
+    const headers = {
+      Authorization: `Token ${token}`,
+    };
+
+    try {
+      const response = await axios.post(
+        `http://localhost:8000/api/problems/${problem.problem_id}/check-flag/`,
+        { flag: inputValue },
+        { headers }
+      );
+
+      const responseData = response.data;
+
+      if (responseData.message === "문제를 해결하였습니다.") {
+        alert("정답입니다!");
+      } else if (responseData.message === "이미 문제를 해결한 적이 있습니다.") {
+        alert("이미 문제를 해결한 적이 있습니다.");
+      } else {
+        alert("오답입니다.");
+      }
+    } catch (error) {
+      alert("오답입니다.");
     }
     setInputValue("");
   };
