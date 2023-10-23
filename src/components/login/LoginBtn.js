@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 const Btn = styled.button`
@@ -19,7 +18,6 @@ const Btn = styled.button`
 
 const LoginBtn = ({ email, pw, setEmail, setPw }) => {
   const [isDisabled, setIsDisabled] = useState(true);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (email !== "" && pw !== "") setIsDisabled(false);

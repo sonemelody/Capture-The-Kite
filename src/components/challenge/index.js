@@ -116,10 +116,6 @@ const Challenge = () => {
     }
   };
 
-  const handleClick = (problemId) => {
-    setCurrentPage(problemId);
-  };
-
   const filterData = () => {
     if (selectedCategory === "all") {
       return data;
@@ -201,10 +197,7 @@ const Challenge = () => {
                   </thead>
                   <tbody>
                     {filterData().map((problem) => (
-                      <tr
-                        key={problem.problem_id}
-                        onClick={() => handleClick(problem.problem_id)}
-                      >
+                      <tr key={problem.problem_id}>
                         <td>
                           <StyledLink to={`/submit/${problem.problem_id}`}>
                             {problem.problem_id}
