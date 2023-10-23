@@ -5,7 +5,6 @@ import { useState, useEffect } from "react";
 const HeaderSection = styled.header`
   width: 100%;
   height: 80px;
-  background-color: white;
 
   .logo {
     flex-grow: 1;
@@ -20,12 +19,12 @@ const HeaderSection = styled.header`
     width: 100%;
     height: 80px;
     position: fixed;
-    z-index: 1;
     left: 50%;
     transform: translate(-50%);
     font-family: Pretendard-Regular;
     border-bottom: 1px solid #e2e2e2;
     background-color: white;
+    z-index: 100;
   }
   .category {
     display: grid;
@@ -50,9 +49,6 @@ const HeaderSection = styled.header`
     background-color: #7d7dec;
     color: white;
   }
-  .logout {
-    z-index: 10;
-  }
   .challenge:hover,
   .rank:hover,
   .account:hover {
@@ -71,22 +67,16 @@ const StyledLink = styled(Link)`
 `;
 
 const Header = () => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const navigate = useNavigate();
+  const [isLoggedIn, setIsLoggedIn] = useState(!!localStorage.getItem("token"));
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      setIsLoggedIn(true);
-    } else {
-      setIsLoggedIn(false);
-    }
+    setIsLoggedIn(!!localStorage.getItem("token"));
   }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
-    navigate("/");
+    window.location.href = "http://localhost:3000/";
   };
 
   return (
