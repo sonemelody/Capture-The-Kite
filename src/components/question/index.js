@@ -244,9 +244,7 @@ const Submit = () => {
                   문제 정보 불러오기
                 </StyledLink>
               ) : (
-                <StyledLink className="getPortBtn" onClick={handleLoadPort}>
-                  문제 정보 불러오기
-                </StyledLink>
+                <p>{problem.contents}</p>
               )}
             </span>
           </div>
