@@ -6,12 +6,16 @@ const MainSection = styled.div`
     font-family: Pretendard-ExtraBold;
     font-size: 50px;
     text-align: center;
-    padding: 100px 0;
+    padding: 135px 0;
+    margin-bottom: 200px;
+    background-image: url("images/main-background.gif");
+    background-size: cover;
+    background-position: center center;
+    color: white;
   }
   .mainPart > div {
     margin: 30px;
   }
-
   .content1 {
     margin: 50px 200px;
     text-align: right;
@@ -54,10 +58,10 @@ const Main = () => {
   useEffect(() => {
     const handleScroll = () => {
       const windowHeight = window.innerHeight;
-      const scrollY = window.scrollY || window.pageYOffset;
+      const scrollY = window.scrollY;
 
-      const image1TriggerPosition = windowHeight * 0.5;
-      const image2TriggerPosition = windowHeight * 1.2;
+      const image1TriggerPosition = windowHeight * 0.75;
+      const image2TriggerPosition = windowHeight * 1.65;
 
       if (scrollY > image1TriggerPosition) {
         setShowImage1(true);
@@ -120,7 +124,7 @@ const Main = () => {
           <img src="/images/cyber.jpg" width="75%" height="75%" alt="Cyber" />
           {showImage2 && (
             <div className="box2">
-              <div style={{ fontSize: "28px" }}>CTK</div>
+              <div style={{ fontSize: "28px" }}>What is CTK</div>
               <span
                 className="line2"
                 style={{ borderBottom: "4px solid #5c5ce7" }}

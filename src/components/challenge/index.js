@@ -100,8 +100,8 @@ const StyledLink = styled(Link)`
 
 const Challenge = () => {
   const [data, setData] = useState([]);
-  const [currentPage, setCurrentPage] = useState(null);
-  const [selectedCategory, setSelectedCategory] = useState("all"); // Default category is 'all'
+  const [currentPage] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState("all");
 
   useEffect(() => {
     fetchData();
