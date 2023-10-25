@@ -179,10 +179,17 @@ const Submit = () => {
         }
       })
       .then((data) => {
-        console.log(`할당된 포트: ${data.port}`);
+        Swal.fire({
+          title: `할당된 포트 : ${data.port}`,
+          icon: "info",
+        });
       })
       .catch((error) => {
-        console.error("포트 정보를 가져오는 중 오류가 발생했습니다.", error);
+        Swal.fire({
+          title: "포트 정보를 가져오는 중 오류가 발생했습니다.",
+          text: error.message,
+          icon: "warning",
+        });
       });
   };
 
