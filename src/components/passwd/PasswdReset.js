@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import "../swal.css";
 
 const PasswdResetBox = styled.div`
   width: 400px;
@@ -63,7 +65,7 @@ const PasswdReset = () => {
   const { uid, token } = useParams();
   const [newPassword, setNewPassword] = useState("");
   const [confirmNewPassword, setConfirmNewPassword] = useState("");
-  const [message, setMessage] = useState("");
+  const [message] = useState("");
   const [isDisabled, setIsDisabled] = useState(true);
 
   useEffect(() => {
@@ -88,15 +90,28 @@ const PasswdReset = () => {
       );
 
       if (newPassword !== confirmNewPassword) {
-        alert("비밀번호가 일치하지 않습니다.");
+        Swal.fire({
+          title: "비밀번호가 일치하지 않습니다.",
+          icon: "warning",
+        });
         return;
       }
 
       if (response.status === 200) {
-        alert("비밀번호가 성공적으로 변경되었습니다.");
+        Swal.fire({
+          title: "비밀번호가 변경되었습니다.",
+          icon: "success",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = "http://localhost:3000/login";
+          }
+        });
       } else {
         const data = await response.json();
-        setMessage(data.message);
+        Swal.fire({
+          title: data.message,
+          icon: "warning",
+        });
       }
     } catch (error) {
       console.error(error);

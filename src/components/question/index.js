@@ -2,6 +2,8 @@ import styled from "styled-components";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
+import "../swal.css";
 
 const SubmitSection = styled.section`
   font-family: Pretendard-Bold;
@@ -177,18 +179,22 @@ const Submit = () => {
         }
       })
       .then((data) => {
-        alert(`할당된 포트: ${data.port}`);
+        console.log(`할당된 포트: ${data.port}`);
       })
       .catch((error) => {
-        alert("포트 정보를 가져오는 중 오류가 발생했습니다.", error);
+        console.error("포트 정보를 가져오는 중 오류가 발생했습니다.", error);
       });
   };
 
   const handleSubmit = async (event) => {
     event.preventDefault();
     if (!isLoggedIn) {
-      alert("로그인이 필요합니다.");
-      window.location.href = "http://localhost:3000/login";
+      Swal.fire({
+        title: "로그인이 필요합니다.",
+        icon: "warning",
+      }).then(() => {
+        window.location.href = "http://localhost:3000/login";
+      });
       return;
     }
 
@@ -207,14 +213,14 @@ const Submit = () => {
       const responseData = response.data;
 
       if (responseData.message === "문제를 해결하였습니다.") {
-        alert("정답입니다!");
+        Swal.fire("정답입니다!", "", "success");
       } else if (responseData.message === "이미 문제를 해결한 적이 있습니다.") {
-        alert("이미 문제를 해결한 적이 있습니다.");
+        Swal.fire("이미 해결한 문제입니다.", "", "warning");
       } else {
-        alert("오답입니다.");
+        Swal.fire("오답입니다.", "", "error");
       }
     } catch (error) {
-      alert("오답입니다.");
+      Swal.fire("오답입니다.", "", "error");
     }
     setInputValue("");
   };

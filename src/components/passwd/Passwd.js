@@ -1,10 +1,12 @@
 import styled from "styled-components";
 import { useState } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+import "../swal.css";
 
 const PasswdBox = styled.div`
   border: 1px solid #dbdbdb;
-  height: 582px;
+  height: 552px;
   padding: 0 40px;
   font-family: Pretendard-Regular;
   .passwdTitle {
@@ -61,36 +63,28 @@ const Btn = styled.button`
 
 const Passwd = () => {
   const [email, setEmail] = useState("");
-  const [message, setMessage] = useState("");
-  const [validEmail, setValidEmail] = useState(false);
 
   const handleEmailChange = (e) => {
     const inputEmail = e.target.value;
     setEmail(inputEmail);
-
-    const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
-    if (emailPattern.test(inputEmail)) {
-      setValidEmail(true);
-    } else {
-      setValidEmail(false);
-    }
   };
 
   const handleResetPassword = () => {
-    if (validEmail) {
-      axios
-        .post("http://localhost:8000/user/reset_password/", { email })
-        .then((response) => {
-          setMessage(response.data.message);
-        })
-        .catch((error) => {
-          console.error(error);
-          setMessage("비밀번호 재설정 이메일 전송에 실패했습니다.");
+    axios
+      .post("http://localhost:8000/user/reset_password/", { email })
+      .then((response) => {
+        Swal.fire({
+          title: response.data.message,
+          icon: "success",
         });
-    } else {
-      setMessage("올바른 이메일 주소를 입력하세요.");
-    }
+      })
+      .catch((error) => {
+        Swal.fire({
+          title: "이메일 전송 실패",
+          text: "올바른 이메일 주소를 입력하세요",
+          icon: "warning",
+        });
+      });
   };
 
   return (
@@ -116,11 +110,8 @@ const Passwd = () => {
         onChange={handleEmailChange}
       />
       <div>
-        <Btn onClick={handleResetPassword} disabled={!validEmail}>
-          비밀번호 재설정 이메일 전송
-        </Btn>
+        <Btn onClick={handleResetPassword}>비밀번호 재설정 이메일 전송</Btn>
       </div>
-      <p>{message}</p>
     </PasswdBox>
   );
 };

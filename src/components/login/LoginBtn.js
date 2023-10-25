@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
+import "../swal.css";
 
 const Btn = styled.button`
   width: 100%;
@@ -43,16 +45,29 @@ const LoginBtn = ({ email, pw, setEmail, setPw }) => {
       if (response.status === 200) {
         const token = response.data.token;
         localStorage.setItem("token", token);
-        alert("로그인 성공");
-        setEmail("");
-        setPw("");
-        window.location.href = "http://localhost:3000/";
+        Swal.fire({
+          title: "로그인 성공!",
+          text: "CTK에 오신 것을 환영합니다!",
+          icon: "success",
+        }).then(() => {
+          setEmail("");
+          setPw("");
+          window.location.href = "http://localhost:3000/";
+        });
       } else {
         localStorage.clear();
-        alert("로그인 실패: 아이디 또는 비밀번호가 일치하지 않습니다.");
+        Swal.fire({
+          title: "로그인 실패",
+          text: "아이디 또는 비밀번호가 일치하지 않습니다.",
+          icon: "warning",
+        });
       }
     } catch (error) {
-      alert("로그인 요청 중 오류가 발생했습니다.");
+      Swal.fire({
+        title: "로그인 실패",
+        text: "아이디 또는 비밀번호가 일치하지 않습니다.",
+        icon: "warning",
+      });
     }
   };
 

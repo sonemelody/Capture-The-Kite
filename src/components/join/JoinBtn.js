@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import styled from "styled-components";
+import Swal from "sweetalert2";
+import "../swal.css";
 
 const Btn = styled.button`
   width: 100%;
@@ -46,16 +48,23 @@ const JoinBtn = ({ email, pw, pwConfirm, nm, nickname }) => {
           nickname,
         })
         .then((response) => {
-          alert(response.data.message);
-          if (response.status === 200) {
-            navigate("/");
-          }
+          Swal.fire({
+            title: `${nm}님! 회원가입을 축하합니다.`,
+            icon: "success",
+          }).then(() => {
+            if (response.status === 200) {
+              navigate("/");
+            }
+          });
         })
         .catch((error) => {
           if (error.response && error.response.data) {
-            alert(error.response.data.message);
+            Swal.fire({
+              title: error.response.data.message,
+              icon: "warning",
+            });
           } else {
-            alert("회원가입 오류가 발생했습니다.");
+            Swal.fire("회원가입 오류가 발생했습니다.", "warning");
           }
         });
     }

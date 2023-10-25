@@ -10,7 +10,7 @@ const HeaderSection = styled.header`
     flex-grow: 1;
     font-size: 32px;
     color: #5c5ce7;
-    font-family: Pretendard-Bold;
+    font-family: Pretendard-ExtraBold;
     padding: 0 30px;
   }
   .navItems {
