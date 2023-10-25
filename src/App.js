@@ -8,6 +8,7 @@ import Join from "./components/join";
 import Submit from "./components/question";
 import Account from "./components/account";
 import Passwd from "./components/passwd";
+import PasswdReset from "./components/passwd/PasswdReset";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/join" element={<Join />} />
           <Route path="/passwd" element={<Passwd />} />
+          <Route path="/passwdReset/:uid/:token" element={<PasswdReset />} />
           <Route path="/account" element={<Account />} />
         </Route>
       </Routes>
