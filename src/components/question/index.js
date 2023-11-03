@@ -43,9 +43,6 @@ const SubmitSection = styled.section`
   .qPathDiv {
     margin: 30px auto;
   }
-  .qFileDiv {
-    margin: 30px 0;
-  }
   .qInfoTitle,
   .qPathTitle,
   .qFileTitle {
@@ -264,9 +261,6 @@ const Submit = () => {
           <div className="qPathDiv">
             <span className="qPathTitle">ssh_path</span>
             <span className="qPathDetail">{problem.ssh_path}</span>
-          </div>
-          <div className="qFileDiv">
-            <span className="qFileTitle">문제 파일</span>
           </div>
         </div>
       </div>
